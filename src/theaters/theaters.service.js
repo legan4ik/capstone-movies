@@ -25,10 +25,7 @@ async function listForMovie(movie_Id) {
   return db('theaters')
     .join("movies_theaters", "theaters.theater_id", "movies_theaters.theater_id")
     .select('theaters.*', 'movies_theaters.is_showing', 'movies_theaters.movie_id')
-    //.select('theaters.*')
     .where({'movies_theaters.movie_id': movie_Id});
-
-    //"theaters".*, "movies_theaters"."is_showing", "movies_theaters"."movie_id" from "theaters" inner join "movies_theaters" on "theaters"."theater_id" = "movies_theaters"."theater_id" where "movie_Id"
 }
 
 module.exports = {

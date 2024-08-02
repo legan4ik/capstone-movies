@@ -2,7 +2,7 @@ const router = require("express").Router({ mergeParams: true });
 const controller = require("./reviews.controller");
 const methodNotAllowed = require("../errors/methodNotAllowed");
 
-router.delete("/:reviewId", controller.destroy);
-router.put("/:reviewId", controller.update);
+router.get("/", controller.listForMovie).all(methodNotAllowed);
+router.route("/:reviewId").delete(controller.destroy).put(controller.update).all(methodNotAllowed);
 
 module.exports = router;

@@ -5,20 +5,11 @@ const methodNotAllowed = require("../errors/methodNotAllowed");
 async function reviewExists(request, response, next) {
   const review_id = request.params.reviewId;
   const review = await service.read(review_id);
-  //if (request.method === "PUT"){
-  //console.log(request.body);
-//}
   if (review){
-      response.locals.review = review;
-    //next({});
+    response.locals.review = review;
     next();
   } else {
-  //next({statusCode: 404, message: `Movie with id ${movie_id} was not found`})
-  // TODO !
-  //response.sendStatus(404);
-  next({status: 404, message: `ID ${review_id} cannot be found`})
-  //next({status: 404})
-  //response.json("Nothing");
+    next({status: 404, message: `ID ${review_id} cannot be found`})
   }
 }
 
@@ -28,7 +19,6 @@ async function destroy(request, response) {
 }
 
 async function list(request, response) {
-  // TODO: Write your code here
   response.json({ data: response.locals.review });
 }
 
@@ -47,34 +37,14 @@ function noMovieIdInPath(request, response, next) {
 }
 
 async function update(request, response) {
-  //loan
-  console.log(request.body)
-  //try {
-
   const result = await service.update({...request.body.data, review_id: request.params.reviewId});
-  //} catch (error) {
-  //  console.log(error)
-  //}
-  //console.log(`result: ${result} 1213`)
   response.json({ data: result });
 }
 
 
 async function listForMovie(request, response) {
   const movie_Id = request.params.movie_Id;
-  //console.log(movie_Id);
   const result = await service.list(movie_Id);
-  /*  "critic_id": 1,
-  "preferred_name": "Chana",
-  "surname": "Gibson",
-  "organization_name": "Film Frenzy",
-  "created_at": "2021-02-23T20:48:13.315Z",
-  "updated_at": "2021-02-23T20:48:13.315Z"
-  */
-  //const formattedResult = result.map(item => ({
-  //  ...item,
-  //  critic: {surname: item.surname}
-  //}));
   for (review of result) {
     review.critic = {
       critic_id: review.critic_id,
@@ -90,18 +60,8 @@ async function listForMovie(request, response) {
     delete review.organization_name;
     delete review.created_at;
     delete review.updated_at;
-    //console.log(review)
   }
-  //const { one, ...rest } = original;
-  //3 4
-  // Construct the new object
-  //const transformed = {
-  //  one,
-  //  other: rest
-  //};
-  //console.log(result);
   response.json({data: result });
-  //response.json({data: result });
 }
 
 module.exports = {

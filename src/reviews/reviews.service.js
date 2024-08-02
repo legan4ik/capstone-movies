@@ -11,7 +11,6 @@ async function list(movie_id) {
   return db('reviews')
     .join("critics", "critics.critic_id", "reviews.critic_id")
     .select('reviews.*', 'critics.*')
-    //.select('theaters.*')
     .where({'movie_id': movie_id});
   
 }
@@ -19,7 +18,6 @@ async function list(movie_id) {
 async function read(reviewId) {
   return db('reviews')
     .select('*')
-    //.select('theaters.*')
     .where({'review_id': reviewId}).first();
 }
 
@@ -28,7 +26,6 @@ async function readCritic(critic_id) {
 }
 
 async function setCritic(review) {
-  //console.log(`review ; ${JSON.stringify(review)}`)
   review.critic = await readCritic(review.critic_id);
   return review;
 }
