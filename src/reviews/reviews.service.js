@@ -9,10 +9,22 @@ async function destroy(reviewId) {
 
 async function list(movie_id) {
   return db('reviews')
-    .join("critics", "critics.critic_id", "reviews.critic_id")
-    .select('reviews.*', 'critics.*')
-    .where({'movie_id': movie_id});
-  
+    .select('reviews.*')
+    .where({'movie_id': movie_id})
+    .then(results => {
+      return Promise.all(results.map(record => {
+        return setCritic(record);
+      }))
+    });
+    /*
+    or
+      return Promise.all(results.map(record => {
+        return setField(record);
+      }));
+      return Promise.all(results.map(async (record) => {
+        return await setCritic(record);
+      }));
+    */
 }
 
 async function read(reviewId) {

@@ -52,5 +52,5 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-    return knex.schema.dropTable('critics').dropTable('movies').dropTable('movies_theaters').dropTable('reviews').dropTable('theaters');
+    return knex.schema.dropTable('movies_theaters').dropTable('reviews').dropTable('theaters').dropTable('critics').dropTable('movies');
 };

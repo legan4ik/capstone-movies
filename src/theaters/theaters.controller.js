@@ -7,14 +7,15 @@ async function list(request, response) {
   response.json({data: result });
 }
 
-
+/* not needed
 async function listForMovie(request, response) {
   const movie_Id = request.params.movie_Id;
   const result = await service.listForMovie(movie_Id);
   response.json({data: result });
 }
+*/
 
 module.exports = {
   list: asyncErrorBoundary(list),
-  listForMovie: asyncErrorBoundary(listForMovie)
+  //listForMovie: asyncErrorBoundary(listForMovie)
 };

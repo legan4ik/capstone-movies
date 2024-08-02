@@ -19,18 +19,20 @@ async function destroy(request, response) {
 }
 
 async function list(request, response) {
-  response.json({ data: response.locals.review });
+  const result = await service.list(request.params.movie_Id);
+  // or {one, ...rest} for critics 
+  response.json({data: result });
 }
 
 function hasMovieIdInPath(request, response, next) {
-  if (request.params.movieId) {
+  if (request.params.movie_Id) {
     return next();
   }
   methodNotAllowed(request, response, next);
 }
 
 function noMovieIdInPath(request, response, next) {
-  if (request.params.movieId) {
+  if (request.params.movie_Id) {
     return methodNotAllowed(request, response, next);
   }
   next();
@@ -41,36 +43,12 @@ async function update(request, response) {
   response.json({ data: result });
 }
 
-
-async function listForMovie(request, response) {
-  const movie_Id = request.params.movie_Id;
-  const result = await service.list(movie_Id);
-  for (review of result) {
-    review.critic = {
-      critic_id: review.critic_id,
-      preferred_name: review.preferred_name,
-      surname: review.surname,
-      organization_name: review.organization_name,
-      created_at: review.created_at,
-      updated_at: review.updated_at
-    }
-    delete review.critic_id;
-    delete review.preferred_name;
-    delete review.surname;
-    delete review.organization_name;
-    delete review.created_at;
-    delete review.updated_at;
-  }
-  response.json({data: result });
-}
-
 module.exports = {
   destroy: [
     noMovieIdInPath,
     asyncErrorBoundary(reviewExists),
     asyncErrorBoundary(destroy),
   ],
-  listForMovie: listForMovie,
   list: [hasMovieIdInPath, asyncErrorBoundary(list)],
   update: [
     noMovieIdInPath,
